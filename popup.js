@@ -7,50 +7,14 @@ const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
 reportBtn.style.display = "none";
 
-scanBtn.addEventListener("click", async function () {
-    const url = linkInput.value.trim().toLowerCase();
-    reportBtn.style.display = "none";
-
-    if (!url) {
-        result.innerHTML = "Please enter a link.";
-        result.style.color = "orange";
-        return;
-    }
-
-    result.innerHTML = "Scanning...";
-    result.style.color = "blue";
-
-    const suspiciousPatterns = [
-        ".xyz", ".tk", ".ru", "bit.ly",
-        "free-money", "verify-account",
-        "login-now", "claim-now", "scholarship"
-    ];
-
-    const isSuspicious = suspiciousPatterns.some(pattern =>
-        url.includes(pattern)
-    );
-
-    if (isSuspicious) {
-        result.innerHTML = "Suspicious link detected!";
-        result.style.color = "red";
-        reportBtn.style.display = "block";
-        saveToHistory(url, "Suspicious");
-        return;
-    }
-
-    result.innerHTML = "Link appears safe.";
-    result.style.color = "green";
-    saveToHistory(url, "Safe");
-});
-
-reportBtn.addEventListener("click", function () {
-    chrome.tabs.create({
-        url: "https://safebrowsing.google.com/safebrowsing/report_phish/"
-    });
-});
-
 function getHistory() {
-    return JSON.parse(localStorage.getItem("scanHistory")) || [];
+    const savedHistory = localStorage.getItem("scanHistory");
+
+    if (savedHistory) {
+        return JSON.parse(savedHistory);
+    }
+
+    return [];
 }
 
 function saveToHistory(url, status) {
@@ -61,13 +25,15 @@ function saveToHistory(url, status) {
     };
 
     let history = getHistory();
+
     history.unshift(scan);
 
-    if (history.length > 10) {
-        history = history.slice(0, 10);
+    if (history.length > 5) {
+        history = history.slice(0, 5);
     }
 
     localStorage.setItem("scanHistory", JSON.stringify(history));
+
     loadHistory();
 }
 
@@ -81,12 +47,12 @@ function loadHistory() {
         return;
     }
 
-    history.forEach(scan => {
+    history.forEach(function (scan) {
         const li = document.createElement("li");
 
         li.innerHTML = `
-            <strong>${scan.status}</strong><br>
-            <span>${scan.url}</span><br>
+            <strong>${scan.status}</strong>
+            <span>${scan.url}</span>
             <small>${scan.date}</small>
         `;
 
@@ -94,9 +60,64 @@ function loadHistory() {
     });
 }
 
+scanBtn.addEventListener("click", function () {
+    const url = linkInput.value.trim().toLowerCase();
+
+    reportBtn.style.display = "none";
+
+    if (!url) {
+        result.innerHTML = "Please enter a link.";
+        result.style.color = "orange";
+        return;
+    }
+
+    result.innerHTML = "Scanning...";
+    result.style.color = "blue";
+
+    const suspiciousPatterns = [
+        ".xyz",
+        ".tk",
+        ".ru",
+        "bit.ly",
+        "free-money",
+        "verify-account",
+        "login-now",
+        "claim-now",
+        "scholarship",
+        "password-reset",
+        "account-locked",
+        "update-billing",
+        "security-alert",
+        "bank-login"
+    ];
+
+    const isSuspicious = suspiciousPatterns.some(function (pattern) {
+        return url.includes(pattern);
+    });
+
+    setTimeout(function () {
+        if (isSuspicious) {
+            result.innerHTML = "Suspicious link detected!";
+            result.style.color = "red";
+            reportBtn.style.display = "block";
+            saveToHistory(url, "Suspicious");
+        } else {
+            result.innerHTML = "Link appears safe.";
+            result.style.color = "green";
+            saveToHistory(url, "Safe");
+        }
+    }, 300);
+});
+
 clearHistoryBtn.addEventListener("click", function () {
     localStorage.removeItem("scanHistory");
     loadHistory();
 });
 
-document.addEventListener("DOMContentLoaded", loadHistory);
+reportBtn.addEventListener("click", function () {
+    chrome.tabs.create({
+        url: "https://safebrowsing.google.com/safebrowsing/report_phish/"
+    });
+});
+
+loadHistory();

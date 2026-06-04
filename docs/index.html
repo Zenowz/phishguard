@@ -8,42 +8,33 @@
 </head>
 <body>
 
-    <!-- Navigation -->
     <nav>
         <div class="logo">🛡️ PhishGuard</div>
 
         <ul>
             <li><a href="#about">About</a></li>
             <li><a href="#features">Features</a></li>
+            <li><a href="#scanner">Scanner</a></li>
             <li><a href="#how">How It Works</a></li>
             <li><a href="#team">Team</a></li>
         </ul>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero">
-
         <div class="hero-content">
-
             <h1>Protect Yourself From Phishing Attacks</h1>
 
             <p>
                 PhishGuard is a browser extension designed to help students
                 identify phishing websites through URL analysis, suspicious
-                keyword detection, and Google Safe Browsing integration.
+                keyword detection, and real-time threat classification.
             </p>
 
-            <a href="#features" class="btn">
-                Explore Features
-            </a>
-
+            <a href="#scanner" class="btn">Try Scanner</a>
         </div>
-
     </section>
 
-    <!-- About -->
     <section id="about" class="section">
-
         <h2>About PhishGuard</h2>
 
         <p>
@@ -52,55 +43,66 @@
             The system helps users make safer decisions before clicking
             suspicious links.
         </p>
-
     </section>
 
-    <!-- Features -->
     <section id="features" class="section dark">
-
         <h2>Key Features</h2>
 
         <div class="cards">
-
             <div class="card">
                 <h3>🔍 URL Analysis</h3>
-                <p>
-                    Examines URLs for suspicious patterns commonly used in phishing attacks.
-                </p>
+                <p>Examines URLs for suspicious patterns commonly used in phishing attacks.</p>
             </div>
 
             <div class="card">
                 <h3>⚡ Real-Time Detection</h3>
-                <p>
-                    Instantly checks websites and provides security warnings.
-                </p>
+                <p>Instantly checks websites and provides security warnings.</p>
             </div>
 
             <div class="card">
-                <h3>🛡️ Safe Browsing API</h3>
-                <p>
-                    Uses Google's Safe Browsing API to identify malicious websites.
-                </p>
+                <h3>🛡️ Phishing Detection</h3>
+                <p>Detects risky words, unusual domains, and suspicious URL structures.</p>
             </div>
 
             <div class="card">
                 <h3>📊 Threat Classification</h3>
-                <p>
-                    Categorizes links as Safe, Suspicious, or Dangerous.
-                </p>
+                <p>Categorizes links as Safe or Suspicious for easier understanding.</p>
             </div>
-
         </div>
-
     </section>
 
-    <!-- How It Works -->
-    <section id="how" class="section">
+    <section id="scanner" class="scanner-section">
+        <h2>Try PhishGuard Scanner</h2>
+        <p>Paste a link below to test the phishing detection system.</p>
 
+        <div class="scanner-box">
+            <input
+                type="text"
+                id="websiteUrlInput"
+                placeholder="Paste suspicious link here"
+            >
+
+            <button id="websiteScanBtn">Scan Link</button>
+
+            <div class="website-result-box">
+                <p id="websiteResult">Waiting for scan...</p>
+
+                <hr>
+
+                <h3>Scan History</h3>
+                <ul id="websiteHistory">
+                    <li>No scans yet.</li>
+                </ul>
+
+                <button id="clearWebsiteHistoryBtn">Clear History</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="how" class="section">
         <h2>How It Works</h2>
 
         <div class="steps">
-
             <div class="step">
                 <span>1</span>
                 <h3>Enter URL</h3>
@@ -118,14 +120,10 @@
                 <h3>Receive Result</h3>
                 <p>Get an instant security assessment and warning level.</p>
             </div>
-
         </div>
-
     </section>
 
-    <!-- Team -->
     <section id="team" class="section dark">
-
         <h2>Development Team</h2>
 
         <p>
@@ -137,23 +135,15 @@
             <h3>Zian Wayne Matunding, Joshua Salinas, Vincent Libranza</h3>
             <p>BS Information Systems</p>
         </div>
-
     </section>
 
-    <!-- Footer -->
     <footer>
-
         <h3>🛡️ PhishGuard</h3>
-
-        <p>
-            Detect. Prevent. Protect.
-        </p>
-
-        <p>
-            © 2026 PhishGuard
-        </p>
-
+        <p>Detect. Prevent. Protect.</p>
+        <p>© 2026 PhishGuard</p>
     </footer>
+
+    <script src="scanner.js"></script>
 
 </body>
 </html>

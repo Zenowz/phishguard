@@ -5,7 +5,8 @@
   "description": "Email & Link Safety for Students",
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "action": {
     "default_popup": "popup.html"
