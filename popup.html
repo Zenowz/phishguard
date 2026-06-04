@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PhishGuard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+    <img src="logo.png" class="logo">
+
+    <input 
+        type="text" 
+        id="linkInput"
+        placeholder="Paste suspicious link here"
+    >
+
+    <button id="scanBtn">Scan Link</button>
+
+    <div id="resultBox">
+        <p id="result">Waiting for scan...</p>
+    </div>
+
+    <button id="reportBtn">
+        Report Phishing Link
+    </button>
+
+</div>
+
+<script src="popup.js"></script>
+
+</body>
+</html>
