@@ -1,36 +1,97 @@
 body {
-    width: 360px;
+    width: 390px;
     margin: 0;
-    padding: 20px;
+    padding: 12px;
     background: #f4f8ff;
     font-family: Arial;
 }
 
 .container {
     background: white;
-    padding: 20px;
-    border-radius: 20px;
+    padding: 14px;
+    border-radius: 18px;
     text-align: center;
 }
 
 .logo {
-    width: 200px;
+    width: 110px;
     display: block;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 12px auto;
 }
 
-h1 {
+.history-section {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    padding: 10px;
+    background: #e8f0ff;
+    border: 2px solid #1e3a8a;
+    border-radius: 12px;
+    text-align: left;
+}
+
+.history-section h3 {
+    margin: 0 0 8px 0;
+    font-size: 15px;
     color: #1e3a8a;
+    text-align: center;
 }
 
-.subtitle {
-    color: gray;
+#clearHistoryBtn {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#historyList {
+    display: block !important;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 95px;
+    overflow-y: auto;
+}
+
+#historyList li {
+    display: block !important;
+    background: white;
+    margin-bottom: 6px;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    word-break: break-word;
+    color: #222;
+    border-left: 4px solid #1e3a8a;
+}
+
+#historyList strong {
+    display: block;
+    color: #000;
+    margin-bottom: 3px;
+}
+
+#historyList span {
+    display: block;
+    margin-bottom: 3px;
+}
+
+#historyList small {
+    display: block;
+    color: #666;
 }
 
 input {
     width: 100%;
     padding: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     box-sizing: border-box;
     border-radius: 10px;
     border: 1px solid #ccc;
@@ -43,15 +104,15 @@ input {
     color: white;
     border: none;
     border-radius: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     cursor: pointer;
 }
 
 #resultBox {
     background: #f1f5f9;
-    padding: 15px;
+    padding: 14px;
     border-radius: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 #result {

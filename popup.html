@@ -10,21 +10,24 @@
 
     <img src="logo.png" class="logo">
 
-    <input 
-        type="text" 
-        id="linkInput"
-        placeholder="Paste suspicious link here"
-    >
+    <input type="text" id="linkInput" placeholder="Paste suspicious link here">
 
     <button id="scanBtn">Scan Link</button>
 
     <div id="resultBox">
         <p id="result">Waiting for scan...</p>
+
+        <hr>
+
+        <h3>Scan History</h3>
+        <ul id="historyList">
+            <li>No scans yet.</li>
+        </ul>
+
+        <button id="clearHistoryBtn">Clear History</button>
     </div>
 
-    <button id="reportBtn">
-        Report Phishing Link
-    </button>
+    <button id="reportBtn">Report Phishing Link</button>
 
 </div>
 
