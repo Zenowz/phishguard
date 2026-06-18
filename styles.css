@@ -1,5 +1,5 @@
 body {
-    width: 390px;
+    width: 410px;
     margin: 0;
     padding: 12px;
     background: #f4f8ff;
@@ -8,84 +8,15 @@ body {
 
 .container {
     background: white;
-    padding: 14px;
+    padding: 16px;
     border-radius: 18px;
     text-align: center;
 }
 
 .logo {
-    width: 110px;
+    width: 120px;
     display: block;
-    margin: 0 auto 12px auto;
-}
-
-.history-section {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 12px;
-    padding: 10px;
-    background: #e8f0ff;
-    border: 2px solid #1e3a8a;
-    border-radius: 12px;
-    text-align: left;
-}
-
-.history-section h3 {
-    margin: 0 0 8px 0;
-    font-size: 15px;
-    color: #1e3a8a;
-    text-align: center;
-}
-
-#clearHistoryBtn {
-    width: 100%;
-    margin-bottom: 8px;
-    padding: 8px;
-    background: #1e3a8a;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-#historyList {
-    display: block !important;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 95px;
-    overflow-y: auto;
-}
-
-#historyList li {
-    display: block !important;
-    background: white;
-    margin-bottom: 6px;
-    padding: 8px;
-    border-radius: 8px;
-    font-size: 11px;
-    word-break: break-word;
-    color: #222;
-    border-left: 4px solid #1e3a8a;
-}
-
-#historyList strong {
-    display: block;
-    color: #000;
-    margin-bottom: 3px;
-}
-
-#historyList span {
-    display: block;
-    margin-bottom: 3px;
-}
-
-#historyList small {
-    display: block;
-    color: #666;
+    margin: 0 auto 15px auto;
 }
 
 input {
@@ -97,37 +28,135 @@ input {
     border: 1px solid #ccc;
 }
 
-#scanBtn {
+button {
     width: 100%;
-    padding: 14px;
-    background: blue;
+    padding: 13px;
     color: white;
     border: none;
     border-radius: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     cursor: pointer;
+    font-weight: bold;
+}
+
+#loginBtn,
+#scanBtn {
+    background: blue;
+}
+
+#registerBtn {
+    background: #1e3a8a;
+}
+
+#logoutBtn {
+    background: #64748b;
+}
+
+#clearHistoryBtn {
+    background: #1e3a8a;
+}
+
+#reportBtn {
+    background: red;
+    display: none;
+}
+
+#authMessage {
+    color: red;
+    font-size: 13px;
+}
+
+#userEmail {
+    font-size: 12px;
+    color: #334155;
+    margin-bottom: 10px;
+}
+
+.stats-box {
+    background: #eef3f8;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+}
+
+.stats-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 15px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.stats-grid div {
+    background: white;
+    border-radius: 8px;
+    padding: 8px 4px;
+}
+
+.stats-grid strong {
+    display: block;
+    font-size: 18px;
+    color: #1e3a8a;
+}
+
+.stats-grid span {
+    font-size: 10px;
+    color: #334155;
 }
 
 #resultBox {
     background: #f1f5f9;
-    padding: 14px;
+    padding: 15px;
     border-radius: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
 }
 
 #result {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     color: black;
 }
 
-#reportBtn {
-    width: 100%;
-    padding: 14px;
-    background: red;
-    color: white;
-    border: none;
+.ai-explanation {
+    text-align: left;
+    color: #111;
+    font-size: 13px;
+    line-height: 1.5;
+    background: white;
+    padding: 10px;
     border-radius: 10px;
-    cursor: pointer;
-    display: none;
+    margin-top: 10px;
+}
+
+#historyList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 140px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+#historyList li {
+    background: white;
+    margin-bottom: 8px;
+    padding: 9px;
+    border-radius: 8px;
+    font-size: 12px;
+    word-break: break-word;
+    color: #222;
+    border-left: 4px solid #1e3a8a;
+}
+
+#historyList strong,
+#historyList span,
+#historyList small {
+    display: block;
+}
+
+#historyList small {
+    color: #666;
 }

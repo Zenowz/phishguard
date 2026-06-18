@@ -1,37 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PhishGuard</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>PhishGuard</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="container">
 
-    <img src="logo.png" class="logo">
+  <img src="logo.png" class="logo">
+
+  <!-- LOGIN / REGISTER -->
+  <div id="authBox">
+    <h3>PhishGuard Login</h3>
+
+    <input type="email" id="emailInput" placeholder="Email">
+    <input type="password" id="passwordInput" placeholder="Password">
+
+    <button id="loginBtn">Login</button>
+    <button id="registerBtn">Register</button>
+
+    <p id="authMessage"></p>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="appBox" style="display:none;">
+    <p id="userEmail"></p>
+    <button id="logoutBtn">Logout</button>
 
     <input type="text" id="linkInput" placeholder="Paste suspicious link here">
 
     <button id="scanBtn">Scan Link</button>
 
     <div id="resultBox">
-        <p id="result">Waiting for scan...</p>
+      <p id="result">Waiting for scan...</p>
 
-        <hr>
+      <hr>
 
-        <h3>Scan History</h3>
-        <ul id="historyList">
-            <li>No scans yet.</li>
-        </ul>
+      <h3>Scan History</h3>
+      <ul id="historyList">
+        <li>No scans yet.</li>
+      </ul>
 
-        <button id="clearHistoryBtn">Clear History</button>
+      <button id="clearHistoryBtn">Clear History</button>
     </div>
 
     <button id="reportBtn">Report Phishing Link</button>
+  </div>
 
 </div>
 
 <script src="popup.js"></script>
-
 </body>
 </html>
