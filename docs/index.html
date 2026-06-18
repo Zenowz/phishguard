@@ -9,12 +9,13 @@
 <body>
 
     <nav>
-        <div class="logo">🛡️ PhishGuard</div>
+        <div class="logo">PhishGuard</div>
 
         <ul>
             <li><a href="#about">About</a></li>
             <li><a href="#features">Features</a></li>
             <li><a href="#scanner">Scanner</a></li>
+            <li><a href="#download">Download</a></li>
             <li><a href="#how">How It Works</a></li>
             <li><a href="#team">Team</a></li>
         </ul>
@@ -30,13 +31,12 @@
                 keyword detection, and real-time threat classification.
             </p>
 
-            <a href="#scanner" class="btn">Try Scanner</a>
+            <a href="#download" class="btn">Download Extension</a>
         </div>
     </section>
 
     <section id="about" class="section">
         <h2>About PhishGuard</h2>
-
         <p>
             PhishGuard is a cybersecurity tool developed to combat phishing
             attacks by analyzing URLs and providing real-time threat warnings.
@@ -66,14 +66,18 @@
 
             <div class="card">
                 <h3>📊 Threat Classification</h3>
-                <p>Categorizes links as Safe or Suspicious for easier understanding.</p>
+                <p>Categorizes links as Safe, Suspicious, or Dangerous.</p>
             </div>
         </div>
     </section>
 
     <section id="scanner" class="scanner-section">
-        <h2>Try PhishGuard Scanner</h2>
-        <p>Paste a link below to test the phishing detection system.</p>
+        <h2>Try PhishGuard Demo Scanner</h2>
+        <p>
+            Paste a link below to test the basic phishing detection demo.
+            Download the extension to access full AI explanations, login, reporting,
+            and cloud scan history.
+        </p>
 
         <div class="scanner-box">
             <input
@@ -89,13 +93,36 @@
 
                 <hr>
 
-                <h3>Scan History</h3>
+                <h3>Demo Scan History</h3>
                 <ul id="websiteHistory">
                     <li>No scans yet.</li>
                 </ul>
 
                 <button id="clearWebsiteHistoryBtn">Clear History</button>
             </div>
+        </div>
+    </section>
+
+    <section id="download" class="section dark">
+        <h2>Download PhishGuard Extension</h2>
+
+        <p>
+            Install the PhishGuard browser extension to access the complete
+            phishing detection system with user authentication, Gemini AI threat
+            explanations, cloud scan history, and suspicious link reporting.
+        </p>
+
+        <div class="download-box">
+            <h3>PhishGuard Browser Extension</h3>
+
+            <p>
+                Full version includes Firebase login, Firestore database scan history,
+                threat scoring, Gemini AI explanation, and report phishing feature.
+            </p>
+
+            <a href="../PhishGuard.zip" class="btn" download>
+                Download Extension
+            </a>
         </div>
     </section>
 
@@ -147,3 +174,4 @@
 
 </body>
 </html>
+
