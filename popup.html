@@ -10,7 +10,6 @@
 
   <img src="logo.png" class="logo">
 
-  <!-- LOGIN / REGISTER -->
   <div id="authBox">
     <h3>PhishGuard Login</h3>
 
@@ -23,10 +22,19 @@
     <p id="authMessage"></p>
   </div>
 
-  <!-- MAIN APP -->
   <div id="appBox" style="display:none;">
     <p id="userEmail"></p>
     <button id="logoutBtn">Logout</button>
+
+    <div class="stats-box">
+      <h3>User Dashboard</h3>
+      <div class="stats-grid">
+        <div><strong id="totalScans">0</strong><span>Total</span></div>
+        <div><strong id="safeScans">0</strong><span>Safe</span></div>
+        <div><strong id="suspiciousScans">0</strong><span>Suspicious</span></div>
+        <div><strong id="dangerousScans">0</strong><span>Dangerous</span></div>
+      </div>
+    </div>
 
     <input type="text" id="linkInput" placeholder="Paste suspicious link here">
 
@@ -37,12 +45,12 @@
 
       <hr>
 
-      <h3>Scan History</h3>
+      <h3>Cloud Scan History</h3>
       <ul id="historyList">
         <li>No scans yet.</li>
       </ul>
 
-      <button id="clearHistoryBtn">Clear History</button>
+      <button id="clearHistoryBtn">Clear Local Display</button>
     </div>
 
     <button id="reportBtn">Report Phishing Link</button>

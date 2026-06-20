@@ -296,3 +296,22 @@ footer p {
         font-size: 17px;
     }
 }
+
+.download-box {
+    max-width: 650px;
+    margin: 40px auto 0 auto;
+    background: #132238;
+    padding: 35px;
+    border-radius: 18px;
+    border: 1px solid #00c8ff;
+}
+
+.download-box h3 {
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.download-box p {
+    margin-bottom: 25px;
+    color: #cbd5e1;
+}

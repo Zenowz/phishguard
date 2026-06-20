@@ -1,4 +1,4 @@
-console.log("PhishGuard popup.js loaded");
+console.log("PhishGuard Firebase popup loaded");
 
 const firebaseConfig = {
     apiKey: "AIzaSyCqZM7z2LItso2fwXqtaK75YxWmF4lNIMg",
@@ -22,21 +22,20 @@ const linkInput = document.getElementById("linkInput");
 const historyList = document.getElementById("historyList");
 const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
-let currentUser = JSON.parse(localStorage.getItem("phishguardUser")) || null;
+const totalScans = document.getElementById("totalScans");
+const safeScans = document.getElementById("safeScans");
+const suspiciousScans = document.getElementById("suspiciousScans");
+const dangerousScans = document.getElementById("dangerousScans");
 
-if (reportBtn) {
-    reportBtn.style.display = "none";
-}
+reportBtn.style.display = "none";
+
+let currentUser = JSON.parse(localStorage.getItem("phishguardUser")) || null;
 
 function showApp() {
     authBox.style.display = "none";
     appBox.style.display = "block";
-
-    if (currentUser) {
-        userEmail.innerHTML = "Logged in as: " + currentUser.email;
-    }
-
-    loadHistory();
+    userEmail.innerHTML = "Logged in as: " + currentUser.email;
+    loadFirestoreHistory();
 }
 
 function showAuth() {
@@ -55,21 +54,13 @@ async function registerUser(email, password) {
 
     const response = await fetch(url, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password,
-            returnSecureToken: true
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, returnSecureToken: true })
     });
 
     const data = await response.json();
 
-    if (data.error) {
-        throw new Error(data.error.message);
-    }
+    if (data.error) throw new Error(data.error.message);
 
     currentUser = {
         uid: data.localId,
@@ -87,21 +78,13 @@ async function loginUser(email, password) {
 
     const response = await fetch(url, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password,
-            returnSecureToken: true
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, returnSecureToken: true })
     });
 
     const data = await response.json();
 
-    if (data.error) {
-        throw new Error(data.error.message);
-    }
+    if (data.error) throw new Error(data.error.message);
 
     currentUser = {
         uid: data.localId,
@@ -191,12 +174,8 @@ function analyzeURL(url) {
     score = Math.min(score, 100);
 
     let status = "Safe";
-
-    if (score >= 70) {
-        status = "Dangerous";
-    } else if (score >= 30) {
-        status = "Suspicious";
-    }
+    if (score >= 70) status = "Dangerous";
+    else if (score >= 30) status = "Suspicious";
 
     if (indicators.length === 0) {
         indicators.push("No suspicious URL pattern detected");
@@ -205,31 +184,46 @@ function analyzeURL(url) {
     return { status, score, indicators };
 }
 
-async function getAIExplanation(url, status, indicators, score) {
+async function checkGoogleSafeBrowsing(url) {
     try {
-        const response = await fetch("http://localhost:3000/explain", {
+        const response = await fetch("http://localhost:3000/safe-browsing", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                url: url,
-                status: status,
-                indicators: indicators,
-                score: score
-            })
+            body: JSON.stringify({ url: url })
+        });
+
+        const data = await response.json();
+        console.log("Google Safe Browsing Result:", data);
+        return data;
+
+    } catch (error) {
+        console.error("Google Safe Browsing check failed:", error);
+
+        return {
+            safeBrowsingStatus: "API Error",
+            matches: []
+        };
+    }
+}
+
+async function getAIExplanation(url, status, indicators, score) {
+    try {
+        const response = await fetch("http://localhost:3000/explain", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url, status, indicators, score })
         });
 
         const data = await response.json();
         return data.explanation;
-    } catch (error) {
+    } catch {
         return "AI explanation unavailable. Make sure the Gemini server is running.";
     }
 }
 
 async function saveScanToFirestore(scan) {
-    if (!currentUser) return;
-
     const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/users/${currentUser.uid}/scans`;
 
     await fetch(url, {
@@ -248,48 +242,78 @@ async function saveScanToFirestore(scan) {
             }
         })
     });
+    console.log("========== FIRESTORE ==========");
+    console.log("Scan saved successfully:");
+    console.log(scan);
+    console.log("===============================");
 }
 
-function getLocalHistory() {
-    const savedHistory = localStorage.getItem("scanHistory");
-    return savedHistory ? JSON.parse(savedHistory) : [];
+async function loadFirestoreHistory() {
+    const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/users/${currentUser.uid}/scans?pageSize=20`;
+
+    historyList.innerHTML = "<li>Loading cloud history...</li>";
+
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + currentUser.idToken
+        }
+    });
+
+    const data = await response.json();
+    const docs = data.documents || [];
+
+    let scans = docs.map(function (doc) {
+        const f = doc.fields;
+
+        return {
+            url: f.url?.stringValue || "",
+            status: f.status?.stringValue || "",
+            score: Number(f.score?.integerValue || 0),
+            explanation: f.explanation?.stringValue || "",
+            scannedAt: f.scannedAt?.timestampValue || ""
+        };
+    });
+
+    scans.sort(function (a, b) {
+        return new Date(b.scannedAt) - new Date(a.scannedAt);
+    });
+
+    renderHistory(scans);
+    renderStats(scans);
 }
 
-function saveLocalHistory(scan) {
-    let history = getLocalHistory();
-    history.unshift(scan);
-    history = history.slice(0, 5);
-    localStorage.setItem("scanHistory", JSON.stringify(history));
-    loadHistory();
-}
-
-function loadHistory() {
-    if (!historyList) return;
-
-    const history = getLocalHistory();
+function renderHistory(scans) {
     historyList.innerHTML = "";
 
-    if (history.length === 0) {
+    if (scans.length === 0) {
         historyList.innerHTML = "<li>No scans yet.</li>";
         return;
     }
 
-    history.forEach(function (scan) {
-        const li = document.createElement("li");
+    scans.slice(0, 5).forEach(function (scan) {
+        const date = new Date(scan.scannedAt).toLocaleString();
 
+        const li = document.createElement("li");
         li.innerHTML = `
             <strong>${scan.status} - ${scan.score}/100</strong>
             <span>${scan.url}</span>
-            <small>${scan.date}</small>
+            <small>${date}</small>
         `;
 
         historyList.appendChild(li);
     });
 }
 
+function renderStats(scans) {
+    totalScans.innerHTML = scans.length;
+    safeScans.innerHTML = scans.filter(s => s.status === "Safe").length;
+    suspiciousScans.innerHTML = scans.filter(s => s.status === "Suspicious").length;
+    dangerousScans.innerHTML = scans.filter(s => s.status === "Dangerous").length;
+}
+
 scanBtn.addEventListener("click", async function () {
     const url = linkInput.value.trim().toLowerCase();
-
     reportBtn.style.display = "none";
 
     if (!url) {
@@ -298,16 +322,41 @@ scanBtn.addEventListener("click", async function () {
         return;
     }
 
-    const analysis = analyzeURL(url);
+    result.innerHTML = "Scanning URL structure and Google Safe Browsing...";
+    result.style.color = "blue";
+
+    let analysis = analyzeURL(url);
+
+    console.log("========================================");
+    console.log("PHISHGUARD SCAN STARTED");
+    console.log("Scanning URL:", url);
+    console.log("Initial Analysis:", analysis);
+    console.log("========================================");
+
+    const safeBrowsingResult = await checkGoogleSafeBrowsing(url);
+
+    console.log("========== GOOGLE SAFE BROWSING ==========");
+    console.log(safeBrowsingResult);
+    console.log("==========================================");
+
+    if (safeBrowsingResult.safeBrowsingStatus === "Dangerous") {
+        analysis.status = "Dangerous";
+        analysis.score = 100;
+        analysis.indicators.push("Google Safe Browsing detected this URL as a known threat");
+    } else if (safeBrowsingResult.safeBrowsingStatus === "No Threat Found") {
+        analysis.indicators.push("Google Safe Browsing result: No known threat found");
+    } else {
+        analysis.indicators.push("Google Safe Browsing API unavailable or returned an error");
+    }
+
     const status = analysis.status;
     const score = analysis.score;
     const indicators = analysis.indicators;
 
-    if (status === "Dangerous" || status === "Suspicious") {
-        result.style.color = "red";
+    result.style.color = status === "Safe" ? "green" : "red";
+
+    if (status !== "Safe") {
         reportBtn.style.display = "block";
-    } else {
-        result.style.color = "green";
     }
 
     result.innerHTML = `
@@ -318,6 +367,14 @@ scanBtn.addEventListener("click", async function () {
 
     const explanation = await getAIExplanation(url, status, indicators, score);
 
+    console.log("============= FINAL RESULT =============");
+    console.log("Threat Score:", score);
+    console.log("Threat Status:", status);
+    console.log("Indicators:", indicators);
+    console.log("AI Explanation:");
+    console.log(explanation);
+    console.log("========================================");
+
     result.innerHTML = `
         <strong>${status} Link</strong><br>
         Threat Score: ${score}/100<br><br>
@@ -327,20 +384,18 @@ scanBtn.addEventListener("click", async function () {
     `;
 
     const scan = {
-        url: url,
-        status: status,
-        score: score,
-        explanation: explanation,
-        date: new Date().toLocaleString()
+        url,
+        status,
+        score,
+        explanation
     };
 
-    saveLocalHistory(scan);
     await saveScanToFirestore(scan);
+    await loadFirestoreHistory();
 });
 
 clearHistoryBtn.addEventListener("click", function () {
-    localStorage.removeItem("scanHistory");
-    loadHistory();
+    historyList.innerHTML = "<li>Local display cleared. Cloud data is still saved.</li>";
 });
 
 reportBtn.addEventListener("click", function () {

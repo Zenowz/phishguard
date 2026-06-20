@@ -3,10 +3,11 @@
   "name": "PhishGuard",
   "version": "1.0",
   "description": "Email & Link Safety for Students",
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "storage"
+  "permissions": ["activeTab", "tabs", "storage"],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "https://identitytoolkit.googleapis.com/*",
+    "https://firestore.googleapis.com/*"
   ],
   "action": {
     "default_popup": "popup.html"

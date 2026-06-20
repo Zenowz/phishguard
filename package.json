@@ -1,31 +1,15 @@
 {
   "name": "phishguard",
   "version": "1.0.0",
-  "description": "",
-  "main": "background.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "description": "PhishGuard Gemini AI backend",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Zenowz/phishguard.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Zenowz/phishguard/issues"
-  },
-  "homepage": "https://github.com/Zenowz/phishguard#readme",
   "dependencies": {
-    "@google/genai": "^2.8.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "@google/genai": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2"
   }
 }
